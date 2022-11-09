@@ -50,5 +50,5 @@ if __name__ == "__main__":
     with Pool(2) as p:
         df = pd.DataFrame(columns=["regionName", "cityName"])
         data = p_map(getCities, regionLinks)
-    pd.concat(data, axis=0).to_csv("CityData.csv", index=False)
+    pd.concat(data, axis=0).to_csv("csv files\\CityData.csv", index=False)
 

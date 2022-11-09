@@ -11,7 +11,7 @@ propertyTypes = ["house", "apartment", "condominium"]
 offerTypes = ['buy', 'rent']
 
 #Rotate IP
-proxy = pd.read_csv("Free_Proxy_List.csv")
+proxy = pd.read_csv("csv files\\Free_Proxy_List.csv")
 proxy = proxy.to_dict('records')
 #urlTemplate  "https://www.lamudi.com.ph/{region}/{city-name}/{barangayName}/{propertyTypes}/{offerTypes}"
 
@@ -56,7 +56,7 @@ if __name__ == "__main__":
                 dfMod['offerType'] = offerType
                 data = p_map(getNumPropertiesCity, dfMod.to_dict('records'))
                 allData = pd.concat([allData, pd.concat(data, axis=0)], ignore_index=True, axis=0)
-    allData.to_csv("CityDataExpanded.csv", index=False)
+    allData.to_csv("csv files\\CityDataExpanded.csv", index=False)
 
 with open('unscrapedData.json', 'w') as f:
     json.dump(unscrapedData, f)

@@ -30,4 +30,4 @@ if __name__ == "__main__":
     with Pool(4) as p:
         df = pd.DataFrame(columns=["regionName", "cityName", "barangayName"])
         data = p_map(getBarangays, cityData.itertuples())
-    pd.concat(data, axis=0).to_csv("BarangayData.csv", index=False)
+    pd.concat(data, axis=0).to_csv("csv files\\BarangayData.csv", index=False)
