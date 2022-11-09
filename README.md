@@ -21,3 +21,24 @@ is 100 pages. Going beyond page 100 gives out an error. As the maximum listings 
 extractions of the total listings per city is extracted. Afterwards, city listings with more than 3000 listings per rent/sale is further divided into their respective
 barangays. If the number of listings is still beyond 3000, the listings in that particular barangay would be subdivided further until listings can go below
 3000 listings.
+
+### Preminilary Data Understanding:
+
+In total, there are 74 available regions and a total of 1483 cities. The number of available listings were scraped depending on the property type (Condominium, Apartment, or House) and their offer type (Sale or Rent). These listings were then aggregated to a file named *CityDataExpanded - Aggregated*.
+
+To visualize the data on the aggregated data, it was copied on over to *Initial Summary*. On the sheet *summary* shows the number of regions with no available listing depending on the property type and offer type. The data of the available listings per city was aggregated to their respective regions and the total number of available listings per property type and offer type was obtained. From here, a total of 444 unique filters (region, property type, and offer type was permutated) was obtained. Of these **444** filters, a total of **208** of them had no listings available in them and a total of 11 had more than 2900 listings in them. 2900 was considered as the limit as to account for new listings within the area.
+
+With this, the 208 unique filters would be discarded and would not be used to find available listings and the 11 unique filters with more than 2900 listings would be split further to their respective cities, if the number of available listings is still beyond 2900, it would be further split into each barangay.
+
+On each of the listings, the location of the listing is included with their own description, details which includes various facts about the listing such as the land size, floor area, number of bathrooms and bedrooms, etc. and additional amenities if any. 
+
+With this, a csv file would be created per property and offer type (a total of 6) which would contain the listings
+- Title
+- Location
+- Details
+- Amenities
+
+If a property does not have a detail or amenities included, the cell would be left blank.
+
+### Gathering of the Data:
+
