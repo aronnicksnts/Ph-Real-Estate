@@ -21,6 +21,14 @@ for region in results:
 #Free memory by deleting unneeded variables
 del page, soup, results
 
+#Gets all cities in a particular region and stores them in
+#a CSV file with two columns, the region's name and the city's href
+regionLinks = []
+for region in regions:
+    URL = f"https://www.lamudi.com.ph/sitemap/{region}-cities-house-for-buy/"
+    regionLinks.append(URL)
+
+
 #Saves all Cities to a DataFrame
 def getCities(url):
     page = requests.get(url)
@@ -36,13 +44,6 @@ def getCities(url):
     df = pd.DataFrame(cities, columns=["regionName", "cityName"])
     return df
 
-
-#Gets all cities in a particular region and stores them in
-#a CSV file with two columns, the region's name and the city's href
-regionLinks = []
-for region in regions:
-    URL = f"https://www.lamudi.com.ph/sitemap/{region}-cities-house-for-buy/"
-    regionLinks.append(URL)
 
 #Runs getCities by Pooling
 if __name__ == "__main__":
