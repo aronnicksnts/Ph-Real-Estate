@@ -13,38 +13,83 @@ proxy = pd.read_csv("csv files\\Free_Proxy_List.csv")
 proxy = proxy.to_dict('records')
 
 cityData = pd.read_csv("csv files\\CityDataExpanded.csv")
-
+brgyData = pd.read_csv("csv files\\BarangayData.csv")
 # Regions that are to be processed where the link of the listings would be scraped
 # Regions that have more than 0 listings and less than 2900 would be included in this list.
 regionData = cityData.groupby("regionName").sum().reset_index(level=0)
 
-
-# URL TEMPLATE
-# https://www.lamudi.com.ph/{region}/{prop type}/{offer type}/?page={page number}
-
 # All links that needs to be visited by the program, with their property type and offer type
 allLinks = {}
+
+# Returns the links to be visited in a dictionary form with cities
+def addCity(cityData, propType, offerType):
+    links = {}
+    # URL TEMPLATE
+    # https://www.lamudi.com.ph/{region}/{city}/{prop type}/{offer type}/?page={page number}
+    for i in range(1,(cityData[key] // 30) + 6):
+        url = f"https://www.lamudi.com.ph/{cityData['regionName']}/{cityData['cityName']}/{propType}/{offerType}/?page={i}"
+        links[url] = [propType, offerType]
+    return links
+
+# Returns the links to be visited in a dictionary form with barangays
+def addBrgy(brgyData, propType, offerType):
+    links = {}
+    # URL TEMPLATE
+    # https://www.lamudi.com.ph/{region}/{city}/{brgyName}/{prop type}/{offer type}/?page={page number}
+    for i in range(1,(cityData[key] // 30) + 6):
+        url = f"https://www.lamudi.com.ph/{brgyData['regionName']}/{brgyData['cityName']}/{brgyData['barangayName']}" \
+        f"/{propType}/{offerType}/?page={i}"
+        links[url] = [propType, offerType]
+    return links
+
+# Gets number of listings in a particular barangay depending on the property type and offer type
+def getNumListBrgy(brgyData, propType, offerType):
+    url = f"https://www.lamudi.com.ph/{brgyData['regionName']}/{brgyData['cityName']}" \
+    f"/{brgyData['barangayName']}/{propType}/{offerType}/"
+    randomProxy = proxy[random.randint(0, len(proxy)-1)]
+    page = requests.get(url, proxies={'http': f"http://{randomProxy['ip']}:{randomProxy['port']}"})
+    
+    soup = BeautifulSoup(page.content, 'html.parser')
+    results = soup.find('span', class_ = 'CountTitle-number')
+    if results:
+        numList = results.getText().replace(",", "")
+    else:
+        numList = 0
+    return numList
+
+
 # Getting links from each of the region 
 for region in regionData.to_dict('records'):
     # Add the number of pages needed to traverse the number of available listings per region
     # Add an extra 10 pages for assurance (In the case that new listings were made whilst scraping)
     for key in region.keys():
         if key == 'regionName': 
-            print(key)
             continue
 
         # Getting links from regions with less than 2900 listings available
+        # URL TEMPLATE
+        # https://www.lamudi.com.ph/{region}/{prop type}/{offer type}/?page={page number}
         if region[key] < 2900 and region[key] > 0:
-            for i in range(1,(region[key] // 30) + 11):
-                propType = key.split('-')[0]
-                offerType = key.split('-')[1]
+            propType = key.split('-')[0]
+            offerType = key.split('-')[1]
+            for i in range(1,(region[key] // 30) + 6):
                 url = f"https://www.lamudi.com.ph/{region['regionName']}/{propType}/{offerType}/?page={i}"
                 allLinks[url] = [propType, offerType]
         
         # Getting links from regions with more than 2900 listings available
-        else:
-            pass
+        elif region[key] > 2900:
+            # Check cities of the region if they have more than 2900 listings, if not use the city 
+            cities = cityData.loc[cityData['regionName'] == region['regionName']]
 
+            for city in cities[['regionName', 'cityName', key]].to_dict('records'):
+                propType = key.split('-')[0]
+                offerType = key.split('-')[1]
+                if city[key] < 2900 and city[key] > 0:
+                    allLinks = {**allLinks, **addCity(city, propType, offerType)}
+                elif city[key] > 2900:
+                    # Use scraped Barangay Data and check their number of listings
+                    pass
+                
 
 allListingLinks = {}
 # Gets the base URL for the listing
