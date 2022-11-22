@@ -49,7 +49,7 @@ def getNumPropertiesCity(data, propertyType, offerType):
 if __name__ == "__main__":
     print("Getting All Available Listings per Property Type and Offer Type")
     allData = dfOrig.copy()
-    with Pool(8) as p:
+    with Pool(16) as p:
         for propertyType in propertyTypes:
             for offerType in offerTypes:
                 dfMod = dfOrig
