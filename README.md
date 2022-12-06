@@ -52,3 +52,25 @@ In total 77808 listings were gathered from lamudi with a total of 148 columns. T
 It can be noted that a lot of the details and amenities are void depending on the property type. When a property type is a house, it usually would not include amenities that a condominium offers. As such, cleaning of the data gathered is essential as the data was stored only on a single excel file.
 
 ### Data Cleaning Process
+
+For the start of the data cleaning process, the notebook *dataCleaning.ipynb* was used.
+
+Once the data has been loaded into the notebook via pandas, the column name was inspected. From the column names, the Floor area was repeated multiple times due to the different special characters used to make ^2. With this, these columns were renamed and the columns were renamed to standard ASCII code which only included english characters.
+
+Afterwards, the string 'void' in the data which was used to indicate that that particular data was empty was replaced with numpy.nan. Afterwards, the duplicate columns of the floor area and land size was inspected.
+
+From the inspection, it appeared that the values in the duplicate columns coincided with the original column where-in if the original floor area and land size has an empty row, one of the duplicate rows would have the data for it. Thus, these columns were then concatenated into a single column and the duplicate columns were removed.
+
+Afterwards, data conversion was done with the data of land size and floor area. Commas were removed and any special characters were removed so that the value could be converted into an integer.
+
+Other columns were also cleaned, where the commas and special characters were removed so that the column could be properly converted into a integer or float. The column *Available from* was converted into a datetime format, Build (Year) into an integer format.
+
+Location was the one next cleaned in the process. The location string would sometimes have whitespace that separates the location inputted by the client and the location put by the website. With this, as the data inputted by the client is not consistent, it was removed from the dataset and only the location inputted by the website was kept. A column named *Unnamed: 136* was also removed as when investigated, it appears that it only showed an empty amenity in the listing. 
+
+With this, initial cleaning has been completed, the dataset was then split into three categories depending on their property type: house, apartment, and condominium.
+
+The unique values per column was checked to see if the nan values could be replaced with another default values. Looking into it, it appears that the nan values in most of the columns could be changed to a default value of 0 as the nan usually entailed that the amenity or detail was not available for the listing.
+
+Afterwards, the number of empty rows per column was taken for each of the property, and if the column had more than 50% missing data for the property, that particular column was removed. And if the number of missing data is less than 10%, the rows with the missing data were removed instead.
+
+The datasets were all then saved into their own separate csv files.
