@@ -1,8 +1,7 @@
 # About
 
 The following github repositories explores the data available at [lamudi](lamudi.com.ph). The website gives available houses, condominiums, apartments, commercial, 
-land for sale and for rent in the Philippines. The available data was then scraped, specifically houses, condominiums, and apartments for sale and for rent around the 
-Philippines. 
+land for sale and for rent in the Philippines. The available data was then scraped, specifically houses, condominiums, and apartments for sale and for rent around the Philippines.
 
 ## Methodology
 
@@ -12,13 +11,9 @@ The methodology of this project is split into several different parts.
 
 To extract the data from lamudi, the website was first explored to give insight on how the website is structured. 
 
-A total of ---,--- properties were for sale and --,--- properties were for rent at the time of retrieval (As of November 9, 2022). These properties could be grouped on
-their specific location. Locations are grouped as follows: Region, City, Barangay. Furthermore, filters could be added as to search for a more specific listing.
-Filters can include but is not limited to the price, number of bedrooms, number of bathrooms, floor area, land size, and available amenities (if any).
+The properties could be grouped on their specific location. Locations are grouped as follows: Region, City, Barangay. Furthermore, filters could be added as to search for a more specific listing. Filters can include but is not limited to the price, number of bedrooms, number of bathrooms, floor area, land size, and available amenities (if any).
 
-When looking through listings, the number of available listings per page is at maximum 30 listings. And the maximum number of pages available to be given by the website is 100 pages. Going beyond page 100 gives out an error. As the maximum listings that can be given through particular filters is 3000 listings, 
-extractions of the total listings per city is extracted. Afterwards, city listings with more than 3000 listings per rent/sale is further divided into their respective
-barangays. If the number of listings is still beyond 3000, the listings in that particular barangay would be subdivided further to specific price ranges until listings can go below 3000 listings.
+When looking through listings, the number of available listings per page is at maximum 30 listings. And the maximum number of pages available to be given by the website is 100 pages. Going beyond page 100 gives out an error. As the maximum listings that can be given through particular filters is 3000 listings, extractions of the total listings per city is extracted. Afterwards, city listings with more than 3000 listings per rent/sale is further divided into their respective barangays. If the number of listings is still beyond 3000, the listings in that particular barangay would be subdivided further to specific price ranges until listings can go below 3000 listings.
 
 ### Preminilary Data Understanding:
 
@@ -74,3 +69,7 @@ The unique values per column was checked to see if the nan values could be repla
 Afterwards, the number of empty rows per column was taken for each of the property, and if the column had more than 50% missing data for the property, that particular column was removed. And if the number of missing data is less than 10%, the rows with the missing data were removed instead.
 
 The datasets were all then saved into their own separate csv files.
+
+### Data Visualization
+
+Data visualization was done in the notebook titled as *datavisualization.ipynb*. In it, a histogram is created for each of the listings for buying or selling of apartments, condominiums, and houses. The histogram shows the prices of each of the listings offered. Afterwards, a map visualization is also used to show the different averages per region. The number of listings were shown, the average buying prices, average renting prices for each of the dataset is shown and the average amenities per region is also shown.
